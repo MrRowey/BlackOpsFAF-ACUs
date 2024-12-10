@@ -7,13 +7,15 @@
 
 local NullShell = import('/lua/sim/defaultprojectiles.lua').NullShell
 local EffectTemplate = import('/lua/EffectTemplates.lua')
+local TrashBagAdd = TrashBag.Add
 
 ---@class Cluster01Effect03 : NullShell
 Cluster01Effect03 = Class(NullShell) {
     ---@param self Cluster01Effect03
     OnCreate = function(self)
         NullShell.OnCreate(self)
-        self:ForkThread(self.EffectThread)
+        local trash = self.Trash
+        TrashBagAdd(trash, ForkThread(self.EffectThread, self))
     end,
 
     ---@param self Cluster01Effect03

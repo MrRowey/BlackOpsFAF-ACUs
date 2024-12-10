@@ -1,5 +1,6 @@
 local EffectTemplate = import('/lua/EffectTemplates.lua')
 local CollisionBeam = import('/lua/sim/CollisionBeam.lua').CollisionBeam
+local TrashBagAdd = TrashBag.Add
 
 -- Base class that defines supreme commander specific defaults
 ---@class HawkCollisionBeam : CollisionBeam
@@ -39,9 +40,11 @@ PDLaserCollisionBeam = Class(HawkCollisionBeam) {
     ---@param impactType string
     ---@param targetEntity Entity
     OnImpact = function(self, impactType, targetEntity)
+        local trash = self.Trash
+
         if impactType == 'Terrain' then
             if self.Scorching == nil then
-                self.Scorching = self:ForkThread(self.ScorchThread)
+                self.Scorching = TrashBagAdd(trash, ForkThread(self.ScorchThread, self))
             end
         elseif not impactType == 'Unit' then
             KillThread(self.Scorching)
@@ -53,8 +56,10 @@ PDLaserCollisionBeam = Class(HawkCollisionBeam) {
     ---@param self PDLaserCollisionBeam
     OnEnable = function(self)
         CollisionBeam.OnEnable(self)
+        local trash = self.Trash
+
         if self.Scorching == nil then
-            self.Scorching = self:ForkThread(self.ScorchThread)
+            self.Scorching = TrashBagAdd(trash, ForkThread(self.ScorchThread, self))
         end
     end,
 
@@ -108,9 +113,11 @@ PDLaser2CollisionBeam = Class(CollisionBeam) {
     ---@param impactType string
     ---@param targetEntity Entity
     OnImpact = function(self, impactType, targetEntity)
+        local trash = self.Trash
+
         if impactType == 'Terrain' then
             if self.Scorching == nil then
-                self.Scorching = self:ForkThread(self.ScorchThread)
+                self.Scorching = TrashBagAdd(trash, ForkThread(self.ScorchThread, self))
             end
         elseif not impactType == 'Unit' then
             KillThread(self.Scorching)
@@ -145,9 +152,11 @@ AeonACUPhasonLaserCollisionBeam = Class(HawkCollisionBeam) {
     ---@param impactType string
     ---@param targetEntity Entity
     OnImpact = function(self, impactType, targetEntity)
+        local trash = self.Trash
+
         if impactType == 'Terrain' then
             if self.Scorching == nil then
-                self.Scorching = self:ForkThread(self.ScorchThread)
+                self.Scorching = TrashBagAdd(trash, ForkThread(self.ScorchThread, self))
             end
         elseif not impactType == 'Unit' then
             KillThread(self.Scorching)

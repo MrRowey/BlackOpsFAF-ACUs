@@ -3,7 +3,7 @@ local oldACUUnit = ACUUnit
 ---@class ACUUnit : Unit
 ACUUnit = Class(oldACUUnit) {
     updateBuildRestrictions = function(self)
-        local aiBrain = self:GetAIBrain()
+        local aiBrain = self.AIBrain
         local factionCategory = categories[string.upper(__blueprints[self.UnitId].General.FactionName)]
         -- Sanity check.
         if not factionCategory then
